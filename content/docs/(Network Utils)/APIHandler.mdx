@@ -1,0 +1,51 @@
+---
+title: API Handler
+description: Is designed to handle interactions with a Supabase database for data insertion
+---
+
+## Summary
+
+The `APIHandler` class is designed to handle interactions with a Supabase database for data insertion. It includes methods for initializing the handler, setting up connections, and posting data to the specified table in Supabase.
+
+### Methods
+
+#### Constructor
+
+Initializes the APIHandler instance with log handler, table name, and WiFi handler instances. It also sets up Supabase credentials and initializes the WiFi connection if needed.
+
+**Example Usage**
+
+```python
+api_handler = APIHandler(log_handler, "your_table_name", wifi_handler)
+```
+
+**Parameters**
+
+- `log_handler`: An instance of a logging mechanism to record actions and errors.
+- `table_name`: The name of the table in Supabase where data will be inserted.
+- `wifi_handler`: An instance capable of handling Wi-Fi connections, providing access to a WLAN object.
+
+---
+
+### `insert_data_to_supabase`
+
+Inserts data into the specified Supabase table.
+
+**Example usage**
+
+```python
+data_to_post = {"key": "value"}
+api_handler.insert_data_to_supabase(data_to_post)
+```
+
+**Parameters**
+
+`_POST_DATA`: A dictionary containing the data to be inserted into Supabase.
+
+**Returns**:
+This method does not return a value but logs actions and errors using the provided log handler.
+
+## Notes
+
+- Ensure that the Supabase URL and API key are kept secure and not hardcoded in production environments for security reasons.
+- Handle potential exceptions and edge cases gracefully, especially around network operations and data integrity checks.

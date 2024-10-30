@@ -1,0 +1,51 @@
+---
+title: Wifi
+description: Is designed to handle Wi-Fi connection and scanning functionalities
+---
+
+## Summary
+
+The `WifiHandler` class is designed to handle Wi-Fi connection and scanning functionalities. It initializes with specific parameters such as a logger handler, RSSI range, SSID, password, and timeout settings. The class provides methods to connect to Wi-Fi and scan for available Wi-Fi networks.
+
+**Usage**
+
+```python
+from scan_utils import WifiHandler
+# Assuming you have instantiated a WifiHandler object named wifi_handler:
+wifi_handler = WifiHandler(log_handler, wifi_rssi_range, wifi_ssid, wifi_password, wifi_timeout)
+
+```
+
+**Parameters**
+
+- `log_handler`: An object that handles logging, used to report Wi-Fi connection status.
+- `wifi_rssi_range`: A tuple defining the minimum and maximum RSSI values for a network to be considered in scans.
+- `wifi_ssid`: The SSID (network name) of the Wi-Fi network.
+- `wifi_password`: The password for the Wi-Fi network.
+- `wifi_timeout`: The timeout duration (in seconds) for attempting to connect to the Wi-Fi network.
+
+## Methods
+
+### `connect_to_wifi()`
+
+Attempts to connect the device to a specified Wi-Fi network using provided SSID and password in `WifiHandler`.
+
+### `scan_wifi()`
+
+Performs BLE scanning and returns discovered devices. It retruns a list of dictionaries containing information about detected Bluetooth devices, each with keys rssi and mac_address.
+
+```python
+devices = wifi_handler.scan_wifi()
+print(devices)
+
+[
+ {
+     "id": device_bssid,
+     "name": device_ssid,
+     "rssi": rssi,
+     "hidden": device_hidden,
+     "channel": device_channel,
+ },
+ {...}
+]
+```

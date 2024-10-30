@@ -1,0 +1,65 @@
+---
+title: Configuration
+description: Provides details about the configuration parameters and functionalities
+---
+
+## Summary
+
+The system includes settings for deep sleep duration, day schedules, Bluetooth scan intervals, RSSI ranges, WiFi connection details, and time settings.
+
+```json
+{
+  "deepsleep": {
+    "deepsleep_duration_m": 5,
+    "day_schedule": {
+    # Monday=0, Sunday=6 [Start hour, Start minute, End hour, End minute]
+      "0": [18, 0, 22, 0],
+      "5": [20, 0, 23, 0]
+    }
+  },
+```
+
+### Deep Sleep
+
+- `deepsleep_duration_m` (int): Duration of the deep sleep mode in minutes. Default is 5 minutes.
+- `day_schedule` (dict): A dictionary where keys are day numbers and values are lists representing time slots.
+
+```json
+  "api": {
+    "supabase_table_name": "ESP32"
+  },
+  "bluetooth": {
+    "ms_scan": 60000,
+    "rssi_range": -80
+  },
+  "wifi": {
+    "connection_timeout_s": 10,
+    "rssi_range": -80,
+    "ssid": "name",
+    "password": "password"
+  },
+  "time": {
+    "is_dst": true
+  }
+}
+```
+
+### Api
+
+- `supabase_table_name` (string): Supabase table name
+
+### Bluetooth Settings
+
+- `ms_scan` (int): Time interval in milliseconds between consecutive Bluetooth scans. Default is 60,000 ms (1 minute).
+- `rssi_range` (int): RSSI range to consider a device within range. Default is 80 dBm.
+
+### WiFi Settings
+
+- `connection_timeout_s` (int): Timeout duration in seconds for establishing a Wi-Fi connection. Default is 10 seconds.
+- `rssi_range` (int): RSSI range to consider a Wi-Fi network within range. Default is -80 dBm.
+- `ssid` (str): The SSID of the WiFi network.
+- `password` (str): The password for connecting to the WiFi network.
+
+### Time Settings
+
+- `is_dst` (bool): Indicates whether Daylight Saving Time (DST) is in effect. Default is true.

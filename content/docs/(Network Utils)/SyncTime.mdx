@@ -1,0 +1,27 @@
+---
+title: Sync Time
+description: Is designed to synchronize the real-time clock (RTC) with an NTP server
+---
+
+## Summary
+
+The `sync_time` function is designed to synchronize the real-time clock (RTC) on a device with an NTP server, using a provided WiFi handler to ensure internet connectivity. This function adjusts the time by one hour if the `is_dst` parameter is set to True, which typically enables Daylight Saving Time (DST).
+
+### Usage Example
+
+```python
+from network_utils import sync_time
+
+# Assuming _WIFI_HANDLER has the required methods and attributes
+wifi_handler = YourWiFiHandlerClass()
+sync_time(wifi_handler)  # Synchronizes time without DST adjustment
+sync_time(wifi_handler, is_dst=True)  # Synchronizes time with DST adjustment
+
+```
+
+### Parameters/Arguments
+
+- `_WIFI_HANDLER` : An object representing the WiFi handling capabilities of the device.
+- `is_dst` : (Optional) A boolean value indicating whether Daylight Saving Time should be applied. Default is False.
+
+This function does not return any values directly. It prints a message if synchronization fails and sets the time on the RTC. If `is_dst` is `True`, it adjusts the hour by one to account for DST.

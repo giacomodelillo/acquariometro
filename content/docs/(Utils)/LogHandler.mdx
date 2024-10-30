@@ -1,0 +1,35 @@
+---
+title: Log Handler
+description: Is designed to handle log entries with various levels of severity
+---
+
+## Summary
+
+The `LogsHandler` class is designed to handle log entries with various levels of severity (INFO, SUCCESS, WARN, ERROR). It provides methods to append logs and retrieve them.
+
+Example usage
+
+```python
+from utils import LogsHandler
+
+logs_handler = LogsHandler()
+
+logs_handler.log_append(1, "This is an info message.")
+logs_handler.log_append(-2, "Critical error occurred!")
+
+print(logs_handler.get_logs())
+```
+
+Appends a log entry to the internal logs array based on the provided status code and optional priority.
+
+### Parameters
+
+- `code`: An integer representing the severity of the log (1: INFO, 0: SUCCESS, -1: WARN, -2: ERROR)
+- `message`: A string containing the log message
+- `priority`: An optional integer (default is 0). If provided and non-zero, the log entry will be appended. If priority is zero or code is ERROR, the log entry will not be appended but printed to console.
+
+## `get_logs`
+
+Retrieves the logs from the internal array and formats a summary message based on the presence of ERROR logs.
+
+**Returns** : A list representing the log entries, where the most recent status is at index 0.

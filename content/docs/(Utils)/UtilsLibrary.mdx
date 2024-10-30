@@ -1,0 +1,57 @@
+---
+title: Utils libray
+description: General methods for useful things
+---
+
+## Format time
+
+The `format_time` function retrieves the current local time and formats it into a string following the 'YYYY-MM-DD HH:MM:SS' format.
+
+```python
+formatted_time = format_time()
+print(formatted_time)
+```
+
+---
+
+## Convert to milliseconds
+
+The `convert_milliseconds` function takes a single parameter, ms, which represents a duration in milliseconds. It converts this duration into days, hours, and seconds format and returns it as a string formatted as "days:hours:seconds".
+
+```python
+# Example 1: Convert 90065000 milliseconds to "days:hours:seconds" format
+result = convert_milliseconds(90065000)
+print(result)  # Output will be "1:1:5" (since 90065000 ms is approximately 1 day, 1 hour, and 5 seconds)
+```
+
+---
+
+## Boot message
+
+The `boot_messsage` function is designed to display a custom startup message and then pause the execution for 10 seconds before completing.
+
+```python
+from utils import boot_messsage
+boot_messsage()
+```
+
+---
+
+## Read config
+
+The read_config function is designed to read and parse a JSON configuration file. It attempts to load the contents of the specified file into a dictionary, which it then returns. If an error occurs during this process (e.g., file not found or syntax errors in JSON), it logs the error using the provided logger handler `_LOGS_HANDLER`.
+
+```python
+# Assuming _LOGS_HANDLER is properly initialized and filename points to a valid JSON configuration file
+config = read_config(_LOGS_HANDLER, "path/to/config.json")
+if config:
+    print(config)  # Print the contents of the configuration file
+else:
+    print("Failed to read configuration.")
+```
+
+**Error Handling and Logging**
+
+- The function catches all exceptions that might occur during the execution (e.g., IOError, JSONDecodeError).
+- If an error occurs, it logs a message using `_LOGS_HANDLER.log_append(1, f"Errore nella lettura della configurazione: {e}")` where e is the exception caught.
+- The log entry indicates a critical error (level 1).

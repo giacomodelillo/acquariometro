@@ -75,7 +75,7 @@ const data = {
   navSecondary: [
     {
       title: "Documentazione",
-      url: "#",
+      url: "/docs",
       icon: LifeBuoy,
     },
     {

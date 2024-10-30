@@ -1,0 +1,44 @@
+---
+title: Deep Sleep Handler
+description: Is designed to handle deep sleep scheduling based on a predefined schedule
+---
+
+## Summary
+
+The `DeepSleepHandler` class is designed to handle deep sleep scheduling based on a predefined schedule. It allows the device to enter deep sleep during specified time slots and also handles cases where the current time does not fall within any scheduled slot.
+
+## Class Initialization
+
+**Parameters**
+
+- `log_handler`: An instance of a logging handler that will be used to log messages related to sleep scheduling.
+- `schedule`: A dictionary where keys are integers representing days of the week (Monday=0, Sunday=6) and values are tuples containing two integers each: the start hour and minute for the sleep period, and the end hour and minute for the wake period.
+- `sleep_duration_m`: An integer specifying the duration in minutes for which the device should enter deep sleep.
+
+```python
+schedule = {
+    0: (22, 0, 6, 30),  # Sleep from 10 PM to 6:30 AM on Monday
+    1: (22, 0, 6, 30)   # Same schedule for Tuesday
+}
+handler = DeepSleepHandler(log_handler, schedule, sleep_duration_m)
+```
+
+## `go_to_sleep()`
+
+This method checks the current time against the predefined schedule and determines if the device should enter deep sleep. It also handles cases where the current time does not fall within any scheduled slot.
+
+```python
+# ...
+handler.go_to_sleep()
+```
+
+Flow:
+
+1. Retrieve the current local time using `utime.localtime()`.
+2. Extract the current hour, minute, and weekday from the retrieved time.
+3. Check if the current weekday is in the schedule:
+   - If yes, extract the start and end times for that day from the schedule dictionary.
+   - Compare the current time with the defined start and end times to determine if it falls within a scheduled slot.
+     - If within the slot, log the sleep duration and enter deep sleep using `machine.deepsleep(self.SLEEP_DURATION_MS)`.
+     - If not within the slot, calculate the remaining time until the next scheduled slot and enter deep sleep for that duration.
+4. If the current weekday is not in the schedule, calculate the time until the next scheduled slot and enter deep sleep for that duration.

@@ -1,0 +1,39 @@
+---
+title: Bluetooth
+description: Is designed to handle Bluetooth Low Energy (BLE) scanning and device discovery
+---
+
+## Summary
+
+The BluetoothHandler class is designed to handle Bluetooth Low Energy (BLE) scanning and device discovery using the MicroPython library. It provides methods for initializing the BLE stack, handling IRQ events, and performing BLE scans.
+
+Example usage
+
+```python
+from scan_utils import BluetoothHandler
+# Assuming you have instantiated a BluetoothHandler object named bt_handler:
+bt_handler = BluetoothHandler(log_handler, bt_ms_scan, bt_rssi_range)
+```
+
+**Parameters**
+
+- `log_handler`: An object that handles logging events.
+- `bt_ms_scan`: The duration of the BLE scan in milliseconds.
+- `bt_rssi_range`: The minimum RSSI value to consider when filtering devices.
+
+Method `scan_bluetooth()`
+
+Performs BLE scanning and returns discovered devices. It retruns a list of dictionaries containing information about detected Bluetooth devices, each with keys rssi and mac_address.
+
+```python
+devices = bt_handler.scan_bluetooth()
+print(devices)
+
+[
+ {
+    "rssi": device_rssi,
+    "mac_address": device_address,
+ },
+ {...}
+]
+```
