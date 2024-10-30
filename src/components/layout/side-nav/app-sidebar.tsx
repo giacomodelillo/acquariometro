@@ -80,7 +80,7 @@ const data = {
     },
     {
       title: "Feedback",
-      url: "#",
+      url: "https://github.com/giacomodelillo/acquariometro/issues",
       icon: Send,
     },
     {

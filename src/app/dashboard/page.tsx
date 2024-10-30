@@ -27,6 +27,7 @@ import {
   Activity,
   Dot,
   CircleCheck,
+  Car,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -66,11 +67,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BarChartInteractive } from "@/components/BarChartInteractive";
+import {
+  ComparingChart,
+  CustomMultipleLineChart,
+} from "@/components/LineCharts";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/CustomDataTable";
 import PageContainer from "@/components/layout/page-container";
+import { RecentSales } from "@/components/recent-sales";
+import { CustomRadialChart } from "@/components/radialChart";
+import { CustomMultipleBarChart } from "@/components/BarCharts";
+import {
+  CustomBarHorizzontal,
+  CustomRadarChart,
+} from "@/components/RadarChart";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -147,7 +158,7 @@ const data = [
 
 export default function Dashboard() {
   return (
-    <PageContainer scrollable={false}>
+    <PageContainer scrollable={true}>
       <div className="space-y-4">
         <div className="flex flex-col justify-between space-y-1">
           <h2 className="text-2xl font-bold tracking-tight">Dashboard</h2>
@@ -156,75 +167,86 @@ export default function Dashboard() {
             connessioni in tempo reale.
           </p>
         </div>
-        <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="real-time">Real-time</TabsTrigger>
-            <TabsTrigger value="device">Dispositivo</TabsTrigger>
-          </TabsList>
-          <TabsContent value="overview" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Segnali Wifi
-                  </CardTitle>
-                  <Wifi className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">10</div>
-                  <p className="text-xs text-muted-foreground">
-                    Last update: 20:15
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Dispositivi Bluetooth
-                  </CardTitle>
-                  <Bluetooth className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">3</div>
-                  <p className="text-xs text-muted-foreground">
-                    Last update: 20:15
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Database Load
-                  </CardTitle>
-                  <Database className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">53kb</div>
-                  <p className="text-xs text-muted-foreground">
-                    Last update: 20:15
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Stato dispositivo
-                  </CardTitle>
-                  <Activity className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold flex items-center gap-2">
-                    Active <CircleCheck />
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Last update: 20:15
-                  </p>
-                </CardContent>
-              </Card>
+        <div className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Segnali Wifi
+                </CardTitle>
+                <Wifi className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">10</div>
+                <p className="text-xs text-muted-foreground">
+                  Last update: 20:15
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Dispositivi Bluetooth
+                </CardTitle>
+                <Bluetooth className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">3</div>
+                <p className="text-xs text-muted-foreground">
+                  Last update: 20:15
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Database Load
+                </CardTitle>
+                <Database className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">53kb</div>
+                <p className="text-xs text-muted-foreground">
+                  Last update: 20:15
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Stato dispositivo
+                </CardTitle>
+                <Activity className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold flex items-center gap-2">
+                  Active <CircleCheck />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Last update: 20:15
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-1 lg:grid-cols-8 max-h-min">
+            <div className="col-span-2 ">
+              <CustomRadialChart
+                title="Presenza attuale"
+                description="Basato sugli ultimi dati"
+              />
             </div>
-          </TabsContent>
-        </Tabs>
+            <div className="col-span-4 ">
+              <CustomMultipleLineChart />
+            </div>
+            <Card className="col-span-2 row-span-2"></Card>
+            <div className="col-span-4 ">
+              <CustomMultipleBarChart />
+            </div>
+            <div className="col-span-2">
+              <CustomRadarChart />
+            </div>
+          </div>
+        </div>
       </div>
       {/* <main className="main-frame grid grid-cols-4 gap-4 ">
         <div className="flex flex-col col-span-3 gap-4">
