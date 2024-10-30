@@ -23,6 +23,7 @@ export default async function Page(props: {
   const time = await getGithubLastEdit({
     owner: "giacomodelillo",
     repo: "acquariometro",
+    sha: "main",
     path: `content/docs/${page.file.path}`,
   });
 
