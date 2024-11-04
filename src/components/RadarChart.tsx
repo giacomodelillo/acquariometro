@@ -27,12 +27,12 @@ import {
 export const description = "A radar chart with a grid filled";
 
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 285 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 203 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 264 },
+  { month: "January", desktop: 186, mobile: 264 },
+  { month: "February", desktop: 285, mobile: 209 },
+  { month: "March", desktop: 237, mobile: 203 },
+  { month: "April", desktop: 203, mobile: 237 },
+  { month: "May", desktop: 209, mobile: 285 },
+  { month: "June", desktop: 264, mobile: 186 },
 ];
 
 const chartConfig = {
@@ -40,18 +40,29 @@ const chartConfig = {
     label: "Desktop",
     color: "hsl(var(--chart-1))",
   },
+  mobile: {
+    label: "Mobile",
+    color: "hsl(var(--chart-2))",
+  },
 } satisfies ChartConfig;
 
-export function CustomRadarChart() {
+export function CustomRadarChart({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
   return (
     <Card className="flex flex-col h-full w-full">
       <CardHeader className="items-center pb-4">
-        <CardTitle>Radar Chart - Grid Filled</CardTitle>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="pb-0">
+      <CardContent className="flex-1 flex items-center justify-center pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[270px]"
+          className="mx-auto aspect-square min-h-[15rem]"
         >
           <RadarChart data={chartData}>
             <ChartTooltip
@@ -59,7 +70,7 @@ export function CustomRadarChart() {
               content={<ChartTooltipContent hideLabel />}
             />
             <PolarGrid
-              className="fill-[--color-desktop] opacity-20"
+              // className="fill-[--color-desktop] opacity-30 border-solid"
               gridType="circle"
               radialLines={false}
             />
@@ -72,7 +83,16 @@ export function CustomRadarChart() {
             <Radar
               dataKey="desktop"
               fill="var(--color-desktop)"
-              fillOpacity={0.5}
+              fillOpacity={0}
+              stroke="var(--color-desktop)"
+              strokeWidth={2}
+            />
+            <Radar
+              dataKey="mobile"
+              fill="var(--color-mobile)"
+              fillOpacity={0}
+              stroke="var(--color-mobile)"
+              strokeWidth={2}
             />
             <PolarRadiusAxis
               angle={60}
@@ -83,12 +103,12 @@ export function CustomRadarChart() {
           </RadarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+      <CardFooter className="flex-col items-start gap-2 text-sm">
+        <div className="flex gap-2 font-medium leading-none">
+          Ultimo aggiornamento
         </div>
-        <div className="flex items-center gap-2 leading-none text-muted-foreground">
-          January - June 2024
+        <div className="leading-none text-muted-foreground">
+          2024-10-5 20:14
         </div>
       </CardFooter>
     </Card>

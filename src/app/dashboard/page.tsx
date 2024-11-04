@@ -1,162 +1,58 @@
 "use client";
 
-import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import {
-  ChevronLeft,
-  ChevronRight,
-  Copy,
-  CreditCard,
-  File,
-  Home,
-  LineChart,
-  ListFilter,
-  MoreVertical,
-  Package,
-  Package2,
-  PanelLeft,
-  Search,
-  Settings,
-  ShoppingCart,
-  Truck,
-  Users2,
-  MoreHorizontal,
   Wifi,
   Bluetooth,
   Database,
   Activity,
-  Dot,
   CircleCheck,
-  Car,
+  CircleAlert,
+  CircleX,
+  Router,
 } from "lucide-react";
-
-import { Badge } from "@/components/ui/badge";
-
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
+  CardFooter,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-} from "@/components/ui/pagination";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  ComparingChart,
-  CustomMultipleLineChart,
-} from "@/components/LineCharts";
+import { CustomMultipleLineChart } from "@/components/LineCharts";
 
-import { ColumnDef } from "@tanstack/react-table";
-import { DataTable } from "@/components/CustomDataTable";
 import PageContainer from "@/components/layout/page-container";
-import { RecentSales } from "@/components/recent-sales";
 import { CustomRadialChart } from "@/components/radialChart";
 import { CustomMultipleBarChart } from "@/components/BarCharts";
-import {
-  CustomBarHorizzontal,
-  CustomRadarChart,
-} from "@/components/RadarChart";
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-
-const columns = [
-  {
-    accessorKey: "status",
-    header: "Task",
-  },
-  {
-    accessorKey: "email",
-    header: "Title",
-  },
-  {
-    accessorKey: "amount",
-    header: "Status",
-  },
-];
-
-const data = [
-  {
-    id: "TSK-0000",
-    status: "Bug",
-    title: "We need to bypass the neural TCP card!",
-  },
-  {
-    id: "TSK-0000",
-    status: "Bug",
-    title: "We need to bypass the neural TCP card!",
-  },
-  {
-    id: "TSK-0000",
-    status: "Bug",
-    title: "We need to bypass the neural TCP card!",
-  },
-  {
-    id: "TSK-0000",
-    status: "Bug",
-    title: "We need to bypass the neural TCP card!",
-  },
-  {
-    id: "TSK-0000",
-    status: "Bug",
-    title: "We need to bypass the neural TCP card!",
-  },
-  {
-    id: "TSK-0000",
-    status: "Bug",
-    title: "We need to bypass the neural TCP card!",
-  },
-  {
-    id: "TSK-0000",
-    status: "Bug",
-    title: "We need to bypass the neural TCP card!",
-  },
-  {
-    id: "TSK-0000",
-    status: "Bug",
-    title: "We need to bypass the neural TCP card!",
-  },
-  {
-    id: "TSK-0000",
-    status: "Bug",
-    title: "We need to bypass the neural TCP card!",
-  },
-  {
-    id: "TSK-0000",
-    status: "Bug",
-    title: "We need to bypass the neural TCP card!",
-  },
-
-  // ...
-];
+import { CustomRadarChart } from "@/components/RadarChart";
+import { Separator } from "@/components/ui/separator";
+import Esp32 from "@/components/SvgS";
+import { Progress } from "@/components/ui/progress";
+import { supabase } from "@/app";
 
 export default function Dashboard() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const channels = supabase
+      .channel("custom-all-channel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "ESP32" },
+        (payload) => {
+          console.log(payload);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channels);
+    };
+  }, [supabase, router]);
+
   return (
     <PageContainer scrollable={true}>
       <div className="space-y-4">
@@ -168,7 +64,8 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {/* ------ */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 ">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
@@ -220,7 +117,8 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold flex items-center gap-2">
-                  Active <CircleCheck />
+                  Active{" "}
+                  <span className="flex h-4 w-4 rounded-full bg-green-500" />
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Last update: 20:15
@@ -228,214 +126,148 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-1 lg:grid-cols-8 max-h-min">
+          {/* ----- */}
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-1 lg:grid-cols-8 max-h-min ">
             <div className="col-span-2 ">
               <CustomRadialChart
                 title="Presenza attuale"
-                description="Basato sugli ultimi dati"
+                description="Valore percentuale"
               />
             </div>
             <div className="col-span-4 ">
-              <CustomMultipleLineChart />
+              <CustomMultipleLineChart
+                title="Presenza nel tempo"
+                description="Nell'arco della giornata"
+              />
             </div>
-            <Card className="col-span-2 row-span-2"></Card>
+            <Card className="col-span-2 row-span-2 flex flex-col">
+              <CardHeader className="bg-muted">
+                <CardTitle className="flex flex-row">Dispositivo</CardTitle>
+                <CardDescription>Stato e condizioni ESP32</CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1 pt-4">
+                <div className="aspect-auto relative h-[15rem] w-full mb-6 items-center ">
+                  <Esp32 className="w-full h-full fill-black dark:fill-white " />
+                </div>
+                <div className="flex flex-col gap-4">
+                  <p className="font-medium">Informazioni Tecniche</p>
+                  <div className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-2">
+                      <div className="flex felx-row items-center justify-between">
+                        <div className="flex flex-row items-center gap-2">
+                          <p className="text-muted-foreground text-sm">
+                            Memoria Flash:
+                          </p>
+                          <p className="font-mono text-sm">5/16 MB</p>
+                        </div>
+                        <CircleCheck className="h-4" />
+                      </div>
+                      <Progress
+                        value={5 * (100 / 16)}
+                        markers={[12 * (100 / 16)]}
+                        className={
+                          5 < 12 - 2
+                            ? "bg-green-500"
+                            : 5 > 12
+                            ? "bg-red-500"
+                            : "bg-yellow-500"
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex felx-row items-center justify-between">
+                        <div className="flex flex-row items-center gap-2">
+                          <p className="text-muted-foreground text-sm">
+                            Uso memoria:
+                          </p>
+                          <p className="font-mono text-sm">6/8 Mb</p>
+                        </div>
+                        <CircleAlert className="h-4" />
+                      </div>
+                      <Progress
+                        value={6 * (100 / 8)}
+                        markers={[7 * (100 / 8)]}
+                        className={
+                          6 < 8 - 2
+                            ? "bg-green-500"
+                            : 6 > 8
+                            ? "bg-red-500"
+                            : "bg-yellow-500"
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex felx-row items-center justify-between">
+                        <div className="flex flex-row items-center gap-2">
+                          <p className="text-muted-foreground text-sm">
+                            Segnale RSSI:
+                          </p>
+                          <p className="font-mono text-sm">-70 dBm</p>
+                        </div>
+                        <CircleX className="h-4" />
+                      </div>
+                      <Progress
+                        value={13 * (100 / 16)}
+                        markers={[12 * (100 / 16)]}
+                        className={
+                          13 < 12 - 2
+                            ? "bg-green-500"
+                            : 13 > 12
+                            ? "bg-red-500"
+                            : "bg-yellow-500"
+                        }
+                      />
+                    </div>
+                  </div>
+                  <Separator className="mt-4" />
+                  <p className="font-medium">Firmware e codice</p>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-muted-foreground text-sm flex gap-2">
+                      Ultimo Firmware update: 2022-04-30
+                    </p>
+                    <p className="text-muted-foreground text-sm flex gap-2">
+                      Ultima versione:{" "}
+                      <code className="rounded bg-muted px-[0.3rem] font-mono text-sm">
+                        v1.19.1
+                      </code>
+                    </p>
+                    <p className="text-muted-foreground text-sm flex gap-2">
+                      Ultimo Software update: 2022-04-30
+                    </p>
+                    <p className="text-muted-foreground text-sm flex gap-2">
+                      Ultima versione:
+                      <code className="rounded bg-muted px-[0.3rem] font-mono text-sm">
+                        v0.1
+                      </code>
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="flex-col items-start gap-2 text-sm">
+                <div className="flex gap-2 font-medium leading-none">
+                  Ultimo aggiornamento
+                </div>
+                <div className="leading-none text-muted-foreground">
+                  2024-10-5 20:14
+                </div>
+              </CardFooter>
+              <Separator />
+            </Card>
             <div className="col-span-4 ">
-              <CustomMultipleBarChart />
+              <CustomMultipleBarChart
+                title="Dispositivi rilevati"
+                description="Nell'arco della giornata"
+              />
             </div>
             <div className="col-span-2">
-              <CustomRadarChart />
+              <CustomRadarChart
+                title="Valori RSSI"
+                description="Intesita dei segnali rilevati"
+              />
             </div>
           </div>
         </div>
       </div>
-      {/* <main className="main-frame grid grid-cols-4 gap-4 ">
-        <div className="flex flex-col col-span-3 gap-4">
-          <BarChartInteractive
-            title="Ultime rilevazioni"
-            description="Rilevazioni degli ultimi 5 giorni."
-          />
-          <div className="flex w-full gap-4 ">
-            <Card className="">
-              <CardContent className="pt-4 text-center">
-                <CardDescription>Chiamate riuscite API</CardDescription>
-                <CardTitle className="text-4xl">4</CardTitle>
-              </CardContent>
-            </Card>
-            <Card className="">
-              <CardContent className="pt-4 text-center">
-                <CardDescription>Chiamate riuscite API</CardDescription>
-                <CardTitle className="text-4xl">4</CardTitle>
-              </CardContent>
-            </Card>
-            <Card className="">
-              <CardContent className="pt-4 text-center">
-                <CardDescription>Chiamate fallite API</CardDescription>
-                <CardTitle className="text-4xl">3</CardTitle>
-              </CardContent>
-            </Card>
-          </div>
-          <DataTable
-            columns={columns}
-            data={data}
-            className="h-full"
-            title="Logs"
-            description="Ultimi logs"
-          />
-        </div>
-        <div className="">
-          <Card className="overflow-hidden ">
-            <CardHeader className="flex flex-row items-start bg-muted/50">
-              <div className="grid gap-0.5">
-                <CardTitle className="group flex items-center gap-2 text-lg">
-                  Order Oe31b70H
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
-                  >
-                    <Copy className="h-3 w-3" />
-                    <span className="sr-only">Copy Order ID</span>
-                  </Button>
-                </CardTitle>
-                <CardDescription>Date: November 23, 2023</CardDescription>
-              </div>
-              <div className="ml-auto flex items-center gap-1">
-                <Button size="sm" variant="outline" className="h-8 gap-1">
-                  <Truck className="h-3.5 w-3.5" />
-                  <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-                    Track Order
-                  </span>
-                </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button size="icon" variant="outline" className="h-8 w-8">
-                      <MoreVertical className="h-3.5 w-3.5" />
-                      <span className="sr-only">More</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Export</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Trash</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </CardHeader>
-            <CardContent className="p-6 text-sm">
-              <div className="grid gap-3">
-                <div className="font-semibold">Order Details</div>
-                <ul className="grid gap-3">
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">
-                      Glimmer Lamps x <span>2</span>
-                    </span>
-                    <span>$250.00</span>
-                  </li>
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">
-                      Aqua Filters x <span>1</span>
-                    </span>
-                    <span>$49.00</span>
-                  </li>
-                </ul>
-                <Separator className="my-2" />
-                <ul className="grid gap-3">
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Subtotal</span>
-                    <span>$299.00</span>
-                  </li>
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Shipping</span>
-                    <span>$5.00</span>
-                  </li>
-                  <li className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Tax</span>
-                    <span>$25.00</span>
-                  </li>
-                  <li className="flex items-center justify-between font-semibold">
-                    <span className="text-muted-foreground">Total</span>
-                    <span>$329.00</span>
-                  </li>
-                </ul>
-              </div>
-              <Separator className="my-4" />
-              <div className="grid grid-cols-2 gap-2">
-                <div className="grid gap-3">
-                  <div className="font-semibold">Shipping Information</div>
-                  <address className="grid gap-0.5 not-italic text-muted-foreground">
-                    <span>Liam Johnson</span>
-                    <span>1234 Main St.</span>
-                    <span>Anytown, CA 12345</span>
-                  </address>
-                </div>
-                <div className="grid auto-rows-max gap-3">
-                  <div className="font-semibold">Billing Information</div>
-                  <div className="text-muted-foreground">
-                    Same as shipping address
-                  </div>
-                </div>
-              </div>
-              <Separator className="my-4" />
-              <div className="grid gap-3">
-                <div className="font-semibold">Customer Information</div>
-                <dl className="grid gap-3">
-                  <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">Customer</dt>
-                    <dd>Liam Johnson</dd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">Email</dt>
-                    <dd>
-                      <a href="mailto:">liam@acme.com</a>
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <dt className="text-muted-foreground">Phone</dt>
-                    <dd>
-                      <a href="tel:">+1 234 567 890</a>
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-              <Separator className="my-4" />
-              <div className="grid gap-3">
-                <div className="font-semibold">Payment Information</div>
-                <dl className="grid gap-3">
-                  <div className="flex items-center justify-between">
-                    <dt className="flex items-center gap-1 text-muted-foreground">
-                      <CreditCard className="h-4 w-4" />
-                      Visa
-                    </dt>
-                    <dd>**** **** **** 4532</dd>
-                  </div>
-                </dl>
-              </div>
-            </CardContent>
-            <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
-              <div className="text-xs text-muted-foreground">
-                Updated <time dateTime="2023-11-23">November 23, 2023</time>
-              </div>
-              <Pagination className="ml-auto mr-0 w-auto">
-                <PaginationContent>
-                  <PaginationItem>
-                    <Button size="icon" variant="outline" className="h-6 w-6">
-                      <ChevronLeft className="h-3.5 w-3.5" />
-                      <span className="sr-only">Previous Order</span>
-                    </Button>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <Button size="icon" variant="outline" className="h-6 w-6">
-                      <ChevronRight className="h-3.5 w-3.5" />
-                      <span className="sr-only">Next Order</span>
-                    </Button>
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </CardFooter>
-          </Card>
-        </div>
-      </main> */}
     </PageContainer>
   );
 }

@@ -2,45 +2,23 @@
 
 import * as React from "react";
 import {
-  BookOpen,
-  Bot,
-  ChartNoAxesColumn,
   CloudCog,
-  Command,
-  Database,
+  Droplets,
   Frame,
   LayoutDashboard,
   LifeBuoy,
-  Map,
-  PieChart,
-  Rocket,
   Send,
-  Settings,
-  Settings2,
-  SquareTerminal,
-  Usb,
-  User,
   Wrench,
 } from "lucide-react";
-import Image from "next/image";
 import { NavMain } from "@/components/layout/side-nav/nav-main";
-import { NavProjects } from "@/components/layout/side-nav/nav-projects";
 import { NavSecondary } from "@/components/layout/side-nav/nav-secondary";
-import { NavUser } from "@/components/layout/side-nav/nav-user";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarInset,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
-import Link from "next/link";
-import { Separator } from "../../ui/separator";
 import { RandomEmoji, RandomWelcomePhrases } from "@/components/random-data";
 
 const data = {
@@ -52,21 +30,21 @@ const data = {
   navMain: [
     {
       title: "Dahboard",
-      url: "/",
+      url: "/dashboard",
       icon: LayoutDashboard,
       isActive: true,
       items: [],
     },
     {
       title: "Registro logs",
-      url: "/",
+      url: "/dashboard/registro-logs",
       icon: CloudCog,
       isActive: true,
       items: [],
     },
     {
       title: "Gestione",
-      url: "/",
+      url: "/dashboard/gestione",
       icon: Wrench,
       isActive: true,
       items: [],
@@ -83,11 +61,6 @@ const data = {
       url: "https://github.com/giacomodelillo/acquariometro/issues",
       icon: Send,
     },
-    {
-      title: "Impostazioni",
-      url: "/settings",
-      icon: Settings,
-    },
   ],
   projects: [
     {
@@ -98,40 +71,37 @@ const data = {
   ],
 };
 
+export const company = {
+  name: "Acquariometro",
+  logo: Droplets,
+  plan: "v0.0.1",
+};
+
 export function AppSidebar({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton size="lg" asChild>
-                <Link href="/">
-                  <div className="flex aspect-square size-9 items-center justify-center ">
-                    <Image src="/logo.png" alt="logo" width={24} height={24} />
-                  </div>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">
-                      Acquariometro
-                    </span>
-                    <span className="truncate text-xs">Project</span>
-                  </div>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
+          <div className="flex gap-2 py-2 text-sidebar-accent-foreground ">
+            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+              <company.logo className="size-5 " />
+            </div>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-semibold">{company.name}</span>
+              <span className="truncate text-xs">{company.plan}</span>
+            </div>
+          </div>
         </SidebarHeader>
         <SidebarContent>
           <NavMain items={data.navMain} />
-          {/* <NavProjects projects={data.projects} /> */}
+          <NavSecondary items={data.navSecondary} />
           <blockquote className="mx-2 p-2 text-sm italic bg-muted rounded-lg text-muted-foreground border">
-            <RandomWelcomePhrases /> <RandomEmoji />
+            <RandomWelcomePhrases />{" "}
+            <span className="not-italic">
+              <RandomEmoji />
+            </span>
           </blockquote>
-          <NavSecondary items={data.navSecondary} className="mt-auto" />
         </SidebarContent>
-        <SidebarFooter>
-          <NavUser user={data.user} />
-        </SidebarFooter>
       </Sidebar>
       <SidebarInset>{children}</SidebarInset>
     </SidebarProvider>

@@ -40,12 +40,18 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function CustomMultipleBarChart() {
+export function CustomMultipleBarChart({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
   return (
     <Card className="max-h-full h-full">
       <CardHeader>
-        <CardTitle>Bar Chart - Multiple</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="aspect-[3/1] w-full">
@@ -69,10 +75,10 @@ export function CustomMultipleBarChart() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Ultimo aggiornamento
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          2024-10-5 20:14
         </div>
       </CardFooter>
     </Card>

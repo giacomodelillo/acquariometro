@@ -48,10 +48,10 @@ export function CustomRadialChart({
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="flex-1 flex items-center justify-center pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square min-h-[15rem]"
         >
           <RadialBarChart
             data={chartData}
@@ -102,12 +102,12 @@ export function CustomRadialChart({
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+      <CardFooter className="flex-col items-start gap-2 text-sm">
+        <div className="flex gap-2 font-medium leading-none">
+          Ultimo aggiornamento
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          2024-10-5 20:14
         </div>
       </CardFooter>
     </Card>

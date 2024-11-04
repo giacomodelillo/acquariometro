@@ -16,18 +16,6 @@ const Table = React.forwardRef<
 ));
 Table.displayName = "Table";
 
-const ScrollableTable = React.forwardRef<
-  HTMLTableElement,
-  React.HTMLAttributes<HTMLTableElement>
->(({ className, ...props }, ref) => (
-  <table
-    ref={ref}
-    className={cn("w-full caption-bottom text-sm", className)}
-    {...props}
-  />
-));
-ScrollableTable.displayName = "ScrollableTable";
-
 const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
@@ -35,18 +23,6 @@ const TableHeader = React.forwardRef<
   <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
 ));
 TableHeader.displayName = "TableHeader";
-
-const ScrollableTableHeader = React.forwardRef<
-  HTMLTableSectionElement,
-  React.HTMLAttributes<HTMLTableSectionElement>
->(({ className, ...props }, ref) => (
-  <thead
-    ref={ref}
-    className={cn("sticky top-0 bg-secondary [&_tr]:border-b", className)}
-    {...props}
-  />
-));
-ScrollableTableHeader.displayName = "ScrollableTableHeader";
 
 const TableBody = React.forwardRef<
   HTMLTableSectionElement,
@@ -131,9 +107,7 @@ TableCaption.displayName = "TableCaption";
 
 export {
   Table,
-  ScrollableTable,
   TableHeader,
-  ScrollableTableHeader,
   TableBody,
   TableFooter,
   TableHead,

@@ -1,6 +1,8 @@
 "use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
+
+import { ChevronRight, Settings, type LucideIcon } from "lucide-react";
 
 import {
   Collapsible,
@@ -19,6 +21,8 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { ModeToggle } from "@/components/mode-toggle";
+import { Separator } from "@/components/ui/separator";
 
 export function NavMain({
   items,
@@ -34,6 +38,8 @@ export function NavMain({
     }[];
   }[];
 }) {
+  const currentPath = usePathname();
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -42,7 +48,14 @@ export function NavMain({
           <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip={item.title}>
-                <Link href={item.url}>
+                <Link
+                  href={item.url}
+                  className={
+                    currentPath === item.url
+                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                      : ""
+                  }
+                >
                   <item.icon />
                   <span>{item.title}</span>
                 </Link>
@@ -73,6 +86,9 @@ export function NavMain({
             </SidebarMenuItem>
           </Collapsible>
         ))}
+        <Separator />
+
+        <ModeToggle />
       </SidebarMenu>
     </SidebarGroup>
   );
