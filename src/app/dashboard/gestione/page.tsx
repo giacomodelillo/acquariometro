@@ -37,14 +37,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle, Plus, Trash } from "lucide-react";
+import { Plus, Trash, Sunrise, Sunset, Calendar1 } from "lucide-react";
 
 import { CustomJsonViewer } from "@/components/JsonViewer";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import LoadingState from "@/components/LoadingState";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -207,7 +208,7 @@ export default function Gestione() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       console.log("values", values);
-      // insertSupbaseDataCONFIG(values);
+      insertSupbaseDataCONFIG(values);
     } catch (error) {
       console.error("Form submission error", error);
       setStatus(false);
@@ -226,7 +227,6 @@ export default function Gestione() {
             impostazioni e personalizza le opzioni dei dispositivi.
           </p>
         </div>
-
         {selectedJsonData ? (
           <Form {...form}>
             <form
@@ -240,7 +240,7 @@ export default function Gestione() {
                     <CardTitle>Api e Deepsleep</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-12 gap-2">
+                    <div className="grid grid-cols-12 gap-4">
                       {/* supabase_table_name */}
                       <div className="col-span-6">
                         <FormField
@@ -250,11 +250,12 @@ export default function Gestione() {
                             <FormItem>
                               <FormLabel>Nome Tabella Supabase</FormLabel>
                               <FormControl>
-                                <Input type="string" {...field} />
+                                <Input
+                                  type="string"
+                                  {...field}
+                                  placeholder="Inserire nome tabella"
+                                />
                               </FormControl>
-                              <FormDescription>
-                                Il nome della table su Supabase
-                              </FormDescription>
                               <FormMessage />
                             </FormItem>
                           )}
@@ -267,13 +268,19 @@ export default function Gestione() {
                           name="deepsleep.deepsleep_duration_m"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Deepsleep </FormLabel>
+                              <FormLabel>Deepsleep (minuti)</FormLabel>
                               <FormControl>
-                                <Input type="number" {...field} />
+                                <Input
+                                  type="number"
+                                  {...field}
+                                  placeholder="Inserire durata in minuti"
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Convert to number, defaulting to 0 if empty
+                                    field.onChange(value ? Number(value) : 0);
+                                  }}
+                                />
                               </FormControl>
-                              <FormDescription>
-                                Durata ciclo deepsleep (minuti)
-                              </FormDescription>
                               <FormMessage />
                             </FormItem>
                           )}
@@ -289,20 +296,28 @@ export default function Gestione() {
                   </CardHeader>
                   <CardContent>
                     {/* ms_scan */}
-                    <div className="grid grid-cols-12 gap-2">
+                    <div className="grid grid-cols-12 gap-4">
                       <div className="col-span-6">
                         <FormField
                           control={form.control}
                           name="bluetooth.ms_scan"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Bluetooth scan timeout</FormLabel>
+                              <FormLabel>
+                                Bluetooth scan timeout (secondi)
+                              </FormLabel>
                               <FormControl>
-                                <Input type="number" {...field} />
+                                <Input
+                                  type="number"
+                                  {...field}
+                                  placeholder="Inserire durata in secondi"
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Convert to number, defaulting to 0 if empty
+                                    field.onChange(value ? Number(value) : 0);
+                                  }}
+                                />
                               </FormControl>
-                              <FormDescription>
-                                Durata scan Bluetooth (secondi)
-                              </FormDescription>
                               <FormMessage />
                             </FormItem>
                           )}
@@ -315,14 +330,22 @@ export default function Gestione() {
                           name="bluetooth.bt_rssi_range"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Bluetooth rssi max range</FormLabel>
+                              <FormLabel>
+                                Bluetooth rssi max range (dBm)
+                              </FormLabel>
                               <FormControl>
-                                <Input type="number" {...field} />
+                                <Input
+                                  type="number"
+                                  {...field}
+                                  placeholder="Inserire range"
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Convert to number, defaulting to 0 if empty
+                                    field.onChange(value ? Number(value) : 0);
+                                  }}
+                                />
                               </FormControl>
-                              <FormDescription>
-                                Range rssi entro il quale considerare il segnale
-                                (dBm)
-                              </FormDescription>
+
                               <FormMessage />
                             </FormItem>
                           )}
@@ -345,14 +368,22 @@ export default function Gestione() {
                           name="wifi.connection_timeout_s"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Timeout</FormLabel>
+                              <FormLabel>
+                                Timeout collegamento (secondi)
+                              </FormLabel>
                               <FormControl>
-                                <Input type="number" {...field} />
+                                <Input
+                                  type="number"
+                                  {...field}
+                                  placeholder="Inserire durata in secondi"
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Convert to number, defaulting to 0 if empty
+                                    field.onChange(value ? Number(value) : 0);
+                                  }}
+                                />
                               </FormControl>
-                              <FormDescription>
-                                Tempo massimo di attesa collegamento alla rete
-                                (secondi)
-                              </FormDescription>
+
                               <FormMessage />
                             </FormItem>
                           )}
@@ -365,14 +396,20 @@ export default function Gestione() {
                           name="wifi.wifi_rssi_range"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Wifi rssi max range</FormLabel>
+                              <FormLabel>Wifi rssi max range (dBm)</FormLabel>
                               <FormControl>
-                                <Input type="number" {...field} />
+                                <Input
+                                  type="number"
+                                  {...field}
+                                  placeholder="Inserire range"
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Convert to number, defaulting to 0 if empty
+                                    field.onChange(value ? Number(value) : 0);
+                                  }}
+                                />
                               </FormControl>
-                              <FormDescription>
-                                Range Rssi entro il quale considerare il segnale
-                                (dBm)
-                              </FormDescription>
+
                               <FormMessage />
                             </FormItem>
                           )}
@@ -389,11 +426,13 @@ export default function Gestione() {
                             <FormItem>
                               <FormLabel>Nome rete Wifi</FormLabel>
                               <FormControl>
-                                <Input type="string" {...field} />
+                                <Input
+                                  type="string"
+                                  {...field}
+                                  placeholder="Inserire nome rete wifi"
+                                />
                               </FormControl>
-                              <FormDescription>
-                                Imposta il nome della rete wifi a cui collegarsi
-                              </FormDescription>
+
                               <FormMessage />
                             </FormItem>
                           )}
@@ -408,12 +447,13 @@ export default function Gestione() {
                             <FormItem>
                               <FormLabel>Password Wifi</FormLabel>
                               <FormControl>
-                                <Input type="string" {...field} />
+                                <Input
+                                  type="string"
+                                  {...field}
+                                  placeholder="Inserire la password"
+                                />
                               </FormControl>
-                              <FormDescription>
-                                Imposta la password della rete wifi a cui
-                                collegarsi
-                              </FormDescription>
+
                               <FormMessage />
                             </FormItem>
                           )}
@@ -457,182 +497,224 @@ export default function Gestione() {
                   </CardHeader>
                   <CardContent className="pt-4">
                     <div className="flex flex-col justify-center gap-4">
-                      <div className="border-2 border-dashed rounded-md bg-muted/20 p-4 py-5 flex flex-col items-center">
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          onClick={
-                            () =>
-                              append({
-                                day: 0,
-                                times: [14, 0, 17, 0],
-                              }) // Default values for new schedule
-                          }
-                        >
-                          Inserisci <Plus />
-                        </Button>
-                      </div>
-                      <ScrollArea className="min-h-0 h-[calc(100vh-500px)] rounded bg-muted/40">
-                        <div className="flex flex-col justify-center gap-4">
-                          {fields.map((field, index) => (
-                            <Card key={field.id}>
-                              <CardContent className="flex flex-col justify-between p-4 gap-4">
-                                <div className="flex flex-row gap-4 items-end">
-                                  <Button
-                                    variant="destructive"
-                                    onClick={() => remove(index)}
-                                  >
-                                    <Trash />
-                                  </Button>
-                                  <div className="flex flex-row gap-4 flex-1">
-                                    <FormField
-                                      control={control}
-                                      name={`deepsleep.day_schedule.${index}.day`}
-                                      render={({ field }) => {
-                                        return (
-                                          <FormItem className="flex flex-col">
-                                            <FormLabel>Giorno</FormLabel>
-                                            <FormControl>
-                                              <Select
-                                                value={String(field.value)}
-                                                onValueChange={(value) => {
-                                                  // Convert the selected value back to a number
-                                                  field.onChange(Number(value));
-                                                }}
-                                              >
-                                                <SelectTrigger className="font-normal focus:ring-0 w-[120px]">
-                                                  <SelectValue />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                  {giorni.map(
-                                                    (giorno, index) => {
-                                                      return (
-                                                        <SelectItem
-                                                          key={index}
-                                                          value={index.toString()}
-                                                        >
-                                                          {giorno}
-                                                        </SelectItem>
-                                                      );
-                                                    }
-                                                  )}
-                                                </SelectContent>
-                                              </Select>
-                                            </FormControl>
-                                            <FormMessage />
-                                          </FormItem>
-                                        );
-                                      }}
-                                    />
-                                    <FormField
-                                      control={control}
-                                      name={`deepsleep.day_schedule.${index}.times.0`}
-                                      render={({ field }) => (
-                                        <FormItem className="flex flex-col">
-                                          <FormLabel>Ora inizio</FormLabel>
-                                          <FormControl>
-                                            <Input
-                                              type="number"
-                                              max={23}
-                                              min={0}
-                                              {...field}
-                                              onChange={(e) => {
-                                                const value = e.target.value;
-                                                // Convert to number, defaulting to 0 if empty
-                                                field.onChange(
-                                                  value ? Number(value) : 0
-                                                );
-                                              }}
-                                            />
-                                          </FormControl>
-                                          <FormMessage />
-                                        </FormItem>
-                                      )}
-                                    />
-                                    <FormField
-                                      control={control}
-                                      name={`deepsleep.day_schedule.${index}.times.1`}
-                                      render={({ field }) => (
-                                        <FormItem className="flex flex-col">
-                                          <FormLabel>
-                                            Minuto di inizio
-                                          </FormLabel>
-                                          <FormControl>
-                                            <Input
-                                              type="number"
-                                              max={59}
-                                              min={0}
-                                              {...field}
-                                              onChange={(e) => {
-                                                const value = e.target.value;
-                                                // Convert to number, defaulting to 0 if empty
-                                                field.onChange(
-                                                  value ? Number(value) : 0
-                                                );
-                                              }}
-                                            />
-                                          </FormControl>
-                                          <FormMessage />
-                                        </FormItem>
-                                      )}
-                                    />
-                                    <FormField
-                                      control={control}
-                                      name={`deepsleep.day_schedule.${index}.times.2`}
-                                      render={({ field }) => (
-                                        <FormItem className="flex flex-col">
-                                          <FormLabel>Ora fine</FormLabel>
-                                          <FormControl>
-                                            <Input
-                                              type="number"
-                                              max={23}
-                                              min={0}
-                                              {...field}
-                                              onChange={(e) => {
-                                                const value = e.target.value;
-                                                // Convert to number, defaulting to 0 if empty
-                                                field.onChange(
-                                                  value ? Number(value) : 0
-                                                );
-                                              }}
-                                            />
-                                          </FormControl>
-                                          <FormMessage />
-                                        </FormItem>
-                                      )}
-                                    />
-                                    <FormField
-                                      control={control}
-                                      name={`deepsleep.day_schedule.${index}.times.3`}
-                                      render={({ field }) => (
-                                        <FormItem className="flex flex-col">
-                                          <FormLabel>Minuto di fine</FormLabel>
-                                          <FormControl>
-                                            <Input
-                                              type="number"
-                                              max={59}
-                                              min={0}
-                                              {...field}
-                                              onChange={(e) => {
-                                                const value = e.target.value;
-                                                // Convert to number, defaulting to 0 if empty
-                                                field.onChange(
-                                                  value ? Number(value) : 0
-                                                );
-                                              }}
-                                            />
-                                          </FormControl>
-                                          <FormMessage />
-                                        </FormItem>
-                                      )}
-                                    />
+                      <Card>
+                        <CardContent className="flex flex-col justify-between p-4 gap-4">
+                          <div className="flex flex-row gap-4 items-end">
+                            <Button
+                              type="button"
+                              variant="secondary"
+                              onClick={
+                                () =>
+                                  append({
+                                    day: 0,
+                                    times: [14, 0, 17, 0],
+                                  }) // Default values for new schedule
+                              }
+                            >
+                              Aggiungi <Plus />
+                            </Button>
+                            <div className="flex flex-row gap-4 flex-1 justify-end">
+                              <Skeleton className="h-[40px] w-[110px]" />
+                              <Skeleton className="h-[40px] w-[110px]" />
+                              <Skeleton className="h-[40px] w-[110px]" />
+                              <Skeleton className="h-[40px] w-[110px]" />
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      <div className="flex flex-col justify-center gap-4">
+                        {fields.map((field, index) => (
+                          <Card key={field.id}>
+                            <CardContent className="flex flex-col justify-between p-4 gap-4">
+                              <div className="flex flex-row gap-4 items-end ">
+                                <div className="flex flex-row gap-6 flex-1  items-center">
+                                  <div className="flex flex-row gap-4 items-end">
+                                    <Calendar1 className="h-15 mb-2" />
+                                    <div className="flex flex-col gap-1">
+                                      <p className="text-sm font-medium leading-none">
+                                        Giorno
+                                      </p>
+                                      <FormField
+                                        control={control}
+                                        name={`deepsleep.day_schedule.${index}.day`}
+                                        render={({ field }) => {
+                                          return (
+                                            <FormItem className="flex flex-col">
+                                              <FormControl>
+                                                <Select
+                                                  value={String(field.value)}
+                                                  onValueChange={(value) => {
+                                                    // Convert the selected value back to a number
+                                                    field.onChange(
+                                                      Number(value)
+                                                    );
+                                                  }}
+                                                >
+                                                  <SelectTrigger className="font-normal focus:ring-0 w-[120px]">
+                                                    <SelectValue />
+                                                  </SelectTrigger>
+                                                  <SelectContent>
+                                                    {giorni.map(
+                                                      (giorno, index) => {
+                                                        return (
+                                                          <SelectItem
+                                                            key={index}
+                                                            value={index.toString()}
+                                                          >
+                                                            {giorno}
+                                                          </SelectItem>
+                                                        );
+                                                      }
+                                                    )}
+                                                  </SelectContent>
+                                                </Select>
+                                              </FormControl>
+                                              <FormMessage />
+                                            </FormItem>
+                                          );
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="flex flex-row gap-4 items-end">
+                                    <Sunrise className="h-15 mb-2" />
+                                    <div className="flex flex-col gap-1">
+                                      <p className="text-sm font-medium leading-none">
+                                        Orario di inizio
+                                      </p>
+                                      <div className="flex flex-row gap-1 items-center">
+                                        <FormField
+                                          control={control}
+                                          name={`deepsleep.day_schedule.${index}.times.0`}
+                                          render={({ field }) => (
+                                            <FormItem className="flex flex-col w-[4rem]">
+                                              <FormControl>
+                                                <Input
+                                                  type="number"
+                                                  max={23}
+                                                  min={0}
+                                                  {...field}
+                                                  onChange={(e) => {
+                                                    const value =
+                                                      e.target.value;
+                                                    // Convert to number, defaulting to 0 if empty
+                                                    field.onChange(
+                                                      value ? Number(value) : 0
+                                                    );
+                                                  }}
+                                                />
+                                              </FormControl>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                        <p className="text-xl font-mono font-bold">
+                                          :
+                                        </p>
+                                        <FormField
+                                          control={control}
+                                          name={`deepsleep.day_schedule.${index}.times.1`}
+                                          render={({ field }) => (
+                                            <FormItem className="flex flex-col w-[4rem]">
+                                              <FormControl>
+                                                <Input
+                                                  type="number"
+                                                  max={59}
+                                                  min={0}
+                                                  {...field}
+                                                  onChange={(e) => {
+                                                    const value =
+                                                      e.target.value;
+                                                    // Convert to number, defaulting to 0 if empty
+                                                    field.onChange(
+                                                      value ? Number(value) : 0
+                                                    );
+                                                  }}
+                                                />
+                                              </FormControl>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="flex flex-row gap-4 items-end">
+                                    <Sunset className="h-15 mb-2" />
+                                    <div className="flex flex-col gap-1">
+                                      <p className="text-sm font-medium leading-none">
+                                        Orario di fine
+                                      </p>
+                                      <div className="flex flex-row gap-1 items-center">
+                                        <FormField
+                                          control={control}
+                                          name={`deepsleep.day_schedule.${index}.times.2`}
+                                          render={({ field }) => (
+                                            <FormItem className="flex flex-col w-[4rem]">
+                                              <FormControl>
+                                                <Input
+                                                  type="number"
+                                                  max={23}
+                                                  min={0}
+                                                  {...field}
+                                                  onChange={(e) => {
+                                                    const value =
+                                                      e.target.value;
+                                                    // Convert to number, defaulting to 0 if empty
+                                                    field.onChange(
+                                                      value ? Number(value) : 0
+                                                    );
+                                                  }}
+                                                />
+                                              </FormControl>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                        <p className="text-xl font-mono font-bold">
+                                          :
+                                        </p>
+                                        <FormField
+                                          control={control}
+                                          name={`deepsleep.day_schedule.${index}.times.3`}
+                                          render={({ field }) => (
+                                            <FormItem className="flex flex-col w-[4rem]">
+                                              <FormControl>
+                                                <Input
+                                                  type="number"
+                                                  max={59}
+                                                  min={0}
+                                                  {...field}
+                                                  onChange={(e) => {
+                                                    const value =
+                                                      e.target.value;
+                                                    // Convert to number, defaulting to 0 if empty
+                                                    field.onChange(
+                                                      value ? Number(value) : 0
+                                                    );
+                                                  }}
+                                                />
+                                              </FormControl>
+                                              <FormMessage />
+                                            </FormItem>
+                                          )}
+                                        />
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
-                              </CardContent>
-                            </Card>
-                          ))}
-                        </div>
-                      </ScrollArea>
+                                <Button
+                                  variant="destructive"
+                                  onClick={() => remove(index)}
+                                >
+                                  <Trash />
+                                </Button>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -656,62 +738,56 @@ export default function Gestione() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="h-full flex flex-col gap-4">
-                    {selectedJsonData ? (
-                      <>
-                        <CustomJsonViewer
-                          jsonData={formValues}
-                          className="h-[35rem]"
-                        />
-                        <Separator />
-                        <p className="text-sm text-muted-foreground font-medium font-mono uppercase">
-                          Dettagli
-                        </p>
-                        <div className="flex flex-col gap-2">
-                          <p className="text-muted-foreground text-sm flex gap-2 items-center">
-                            Stato:
-                            <code className="rounded bg-muted px-[0.3rem] font-mono text-sm flex flex-row items-center gap-2">
-                              {isDirty
-                                ? "In attessa di salvataggio"
+                    <CustomJsonViewer
+                      jsonData={formValues}
+                      className="h-[35rem]"
+                    />
+                    <Separator />
+                    <p className="text-sm text-muted-foreground font-medium font-mono uppercase">
+                      Dettagli
+                    </p>
+                    <div className="flex flex-col gap-2">
+                      <p className="text-muted-foreground text-sm flex gap-2 items-center">
+                        Stato:
+                        <code className="rounded bg-muted px-[0.3rem] font-mono text-sm flex flex-row items-center gap-2">
+                          {isDirty
+                            ? "In attessa di salvataggio"
+                            : status
+                            ? "Salvato e attivo"
+                            : "Errore"}
+                          <span
+                            className={cn(
+                              "flex h-2 w-2 rounded-full",
+                              isDirty
+                                ? "bg-yellow-500"
                                 : status
-                                ? "Salvato e attivo"
-                                : "Errore"}
-                              <span
-                                className={cn(
-                                  "flex h-2 w-2 rounded-full",
-                                  isDirty
-                                    ? "bg-yellow-500"
-                                    : status
-                                    ? "bg-green-500"
-                                    : "bg-red-500"
-                                )}
-                              />
-                            </code>
-                          </p>
-                          <p className="text-muted-foreground text-sm flex gap-2 items-center">
-                            Versione:
-                            <code className="rounded bg-muted px-[0.3rem] font-mono text-sm flex flex-row items-center gap-2">
-                              {selectedJsonData.id}
-                            </code>
-                          </p>
-                          <p className="text-muted-foreground text-sm flex gap-2">
-                            Impostato:{" "}
-                            <span className="text-foreground">
-                              {formatDate(selectedJsonData.created_at)}
-                            </span>
-                          </p>
-                          <Button type="submit">Salva configurazione</Button>
-                        </div>
-                      </>
-                    ) : (
-                      <p>Loading</p>
-                    )}
+                                ? "bg-green-500"
+                                : "bg-red-500"
+                            )}
+                          />
+                        </code>
+                      </p>
+                      <p className="text-muted-foreground text-sm flex gap-2 items-center">
+                        Versione:
+                        <code className="rounded bg-muted px-[0.3rem] font-mono text-sm flex flex-row items-center gap-2">
+                          {selectedJsonData.id}
+                        </code>
+                      </p>
+                      <p className="text-muted-foreground text-sm flex gap-2">
+                        Impostato:{" "}
+                        <span className="text-foreground">
+                          {formatDate(selectedJsonData.created_at)}
+                        </span>
+                      </p>
+                      <Button type="submit">Salva configurazione</Button>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
             </form>
           </Form>
         ) : (
-          <div>loading</div>
+          <LoadingState />
         )}
       </div>
     </PageContainer>
