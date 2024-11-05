@@ -467,7 +467,7 @@ export default function Gestione() {
                   control={control}
                   name="time.is_dst"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 bg-background">
                       <div className="space-y-0.5">
                         <p className="font-bold tracking-tight">
                           Imposta ora legale

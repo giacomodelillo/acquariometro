@@ -67,7 +67,7 @@ export default function RegistroLogs() {
     : null;
 
   return (
-    <PageContainer scrollable={false}>
+    <PageContainer scrollable={true}>
       <div className="space-y-4">
         <div className="flex flex-col justify-between space-y-1">
           <h2 className="text-2xl font-bold tracking-tight">Registro Logs</h2>

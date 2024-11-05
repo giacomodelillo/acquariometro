@@ -38,7 +38,7 @@ export function CustomDataTable<TData, TValue>({
 
   return (
     <div className="rounded-md border">
-      <ScrollArea className="h-[calc(100vh-7rem)] dark:bg-neutral-950/20 bg-muted/60">
+      <ScrollArea className="h-[calc(100vh-7rem)] dark:bg-neutral-900/80 bg-muted/80">
         <Table className="relative bg-background">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
