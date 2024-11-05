@@ -6,12 +6,13 @@ import { useEffect, useState } from "react";
 import { supabase, useLogsState } from "@/app";
 
 import PageContainer from "@/components/layout/page-container";
-import { Log, columns } from "./components/columns";
+import { columns } from "./components/columns";
 import { CustomDataTable } from "@/components/DataTable";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { CustomJsonViewer } from "@/components/JsonViewer";
 import { Separator } from "@/components/ui/separator";
 import { useSupabaseData } from "@/hooks/getSupabaseData";
+
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
 
@@ -36,7 +37,7 @@ interface LogsDataObject {
 }
 
 export default function RegistroLogs() {
-  const { supabaseData, getSupabaseData } = useSupabaseData();
+  const { supabaseDataESP32, getSupabaseDataESP32 } = useSupabaseData();
   const { setLogId, logID } = useLogsState();
 
   supabase
@@ -46,27 +47,29 @@ export default function RegistroLogs() {
       { event: "*", schema: "public", table: "ESP32" },
       (payload) => {
         console.log(payload);
-        getSupabaseData();
+        getSupabaseDataESP32();
       }
     )
     .subscribe();
 
   useEffect(() => {
-    getSupabaseData();
+    getSupabaseDataESP32();
   }, []);
 
+  console.log(supabaseDataESP32);
   // const router = useRouter();
-  const logsDatArray: LogsDataObject[] = supabaseData.map((obj) => ({
+  const logsDatArray: LogsDataObject[] = supabaseDataESP32.map((obj) => ({
     id: obj.id,
     status: obj.logs[0].status,
     message: obj.logs[0].message,
     timestamp: formatDate(obj.created_at),
   }));
 
-  const selectedJsonData = supabaseData
-    ? supabaseData.find(
+  const selectedJsonData = supabaseDataESP32
+    ? supabaseDataESP32.find(
         (obj) =>
-          obj.id === (logID.length === 0 ? setLogId(supabaseData[0].id) : logID)
+          obj.id ===
+          (logID.length === 0 ? setLogId(supabaseDataESP32[0].id) : logID)
       )
     : null;
 

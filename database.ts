@@ -34,6 +34,24 @@ export type Database = {
   };
   public: {
     Tables: {
+      CONFIG: {
+        Row: {
+          config_json: Json | null;
+          created_at: string;
+          id: string;
+        };
+        Insert: {
+          config_json?: Json | null;
+          created_at?: string;
+          id?: string;
+        };
+        Update: {
+          config_json?: Json | null;
+          created_at?: string;
+          id?: string;
+        };
+        Relationships: [];
+      };
       ESP32: {
         Row: {
           created_at: string;
