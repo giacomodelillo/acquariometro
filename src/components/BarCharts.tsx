@@ -30,12 +30,12 @@ const chartData = [
 ];
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  wifi: {
+    label: "Wifi",
     color: "hsl(var(--chart-1))",
   },
-  mobile: {
-    label: "Mobile",
+  bluetooth: {
+    label: "Bluetooth",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
@@ -43,9 +43,13 @@ const chartConfig = {
 export function CustomMultipleBarChart({
   title,
   description,
+  lastUpdate,
+  chartData,
 }: {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
+  lastUpdate?: string;
+  chartData: any[];
 }) {
   return (
     <Card className="max-h-full h-full">
@@ -58,7 +62,7 @@ export function CustomMultipleBarChart({
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="day"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
@@ -68,8 +72,8 @@ export function CustomMultipleBarChart({
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+            <Bar dataKey="wifi" fill="var(--color-wifi)" radius={4} />
+            <Bar dataKey="bluetooth" fill="var(--color-bluetooth)" radius={4} />
           </BarChart>
         </ChartContainer>
       </CardContent>
@@ -77,9 +81,7 @@ export function CustomMultipleBarChart({
         <div className="flex gap-2 font-medium leading-none">
           Ultimo aggiornamento
         </div>
-        <div className="leading-none text-muted-foreground">
-          2024-10-5 20:14
-        </div>
+        <div className="leading-none text-muted-foreground">{lastUpdate}</div>
       </CardFooter>
     </Card>
   );

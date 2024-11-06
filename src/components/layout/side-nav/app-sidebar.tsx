@@ -19,7 +19,6 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import { RandomEmoji, RandomWelcomePhrases } from "@/components/random-data";
 
 const data = {
   user: {
@@ -95,12 +94,6 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
         <SidebarContent>
           <NavMain items={data.navMain} />
           <NavSecondary items={data.navSecondary} />
-          <blockquote className="mx-2 p-2 text-sm italic bg-muted rounded-lg text-muted-foreground border">
-            <RandomWelcomePhrases />{" "}
-            <span className="not-italic">
-              <RandomEmoji />
-            </span>
-          </blockquote>
         </SidebarContent>
       </Sidebar>
       <SidebarInset>{children}</SidebarInset>

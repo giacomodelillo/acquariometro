@@ -38,9 +38,11 @@ const chartConfig = {
 export function CustomRadialChart({
   title,
   description,
+  lastUpdate,
 }: {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
+  lastUpdate?: string;
 }) {
   return (
     <Card className="flex flex-col h-full w-full">
@@ -106,9 +108,7 @@ export function CustomRadialChart({
         <div className="flex gap-2 font-medium leading-none">
           Ultimo aggiornamento
         </div>
-        <div className="leading-none text-muted-foreground">
-          2024-10-5 20:14
-        </div>
+        <div className="leading-none text-muted-foreground">{lastUpdate}</div>
       </CardFooter>
     </Card>
   );

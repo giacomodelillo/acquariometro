@@ -11,7 +11,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { CustomJsonViewer } from "@/components/JsonViewer";
 import { Separator } from "@/components/ui/separator";
 import { useSupabaseData } from "@/hooks/getSupabaseData";
-import LoadingState from "@/components/LoadingState";
+import { LoadingState } from "@/components/LoadingState";
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -49,8 +49,6 @@ export default function RegistroLogs() {
     getSupabaseDataESP32();
   }, []);
 
-  console.log(supabaseDataESP32);
-  // const router = useRouter();
   const logsDatArray: Log[] = supabaseDataESP32.map((obj) => ({
     id: obj.id,
     status: obj.logs[0].status,

@@ -1,10 +1,24 @@
 import { supabase } from "@/app";
 import { useState } from "react";
+import { Json } from "../../database";
+
+type Supabase32Data = {
+  created_at: string;
+  devices: Json | null;
+  id: string;
+  logs: Json | null;
+}[];
+
+type SupbaseCONFIGData = {
+  config_json: Json | null;
+  created_at: string;
+  id: string;
+}[];
 
 export const useSupabaseData = () => {
   const [supabaseDataESP32, setSupabaseDataESP32] = useState<any[]>([]);
-  const [supabaseDataCONFIG, setSupabaseDataCONFIG] = useState<any>();
-  const [formData, setFormData] = useState<any>();
+  const [supabaseDataCONFIG, setSupabaseDataCONFIG] =
+    useState<SupbaseCONFIGData>([]);
 
   const getSupabaseDataESP32 = async () => {
     let { data, error } = await supabase

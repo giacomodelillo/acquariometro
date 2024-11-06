@@ -99,7 +99,7 @@ export function GridPattern({
       ref={containerRef}
       aria-hidden="true"
       className={cn(
-        "pointer-events-none absolute -z-10 inset-0 h-full w-full fill-green-400/30 stroke-gray-400/25 dark:stroke-gray-600/15",
+        "pointer-events-none absolute -z-10 inset-0 h-full w-full fill-green-400/30 stroke-gray-400/15 dark:stroke-gray-600/15",
         className
       )}
       {...props}

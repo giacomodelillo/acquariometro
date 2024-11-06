@@ -1,6 +1,6 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
+import { Bluetooth, TrendingUp } from "lucide-react";
 import {
   PolarAngleAxis,
   PolarRadiusAxis,
@@ -26,22 +26,13 @@ import {
 
 export const description = "A radar chart with a grid filled";
 
-const chartData = [
-  { month: "January", desktop: 186, mobile: 264 },
-  { month: "February", desktop: 285, mobile: 209 },
-  { month: "March", desktop: 237, mobile: 203 },
-  { month: "April", desktop: 203, mobile: 237 },
-  { month: "May", desktop: 209, mobile: 285 },
-  { month: "June", desktop: 264, mobile: 186 },
-];
-
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  wifi: {
+    label: "Wifi",
     color: "hsl(var(--chart-1))",
   },
-  mobile: {
-    label: "Mobile",
+  bluetooth: {
+    label: "Bluetooth",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
@@ -49,9 +40,13 @@ const chartConfig = {
 export function CustomRadarChart({
   title,
   description,
+  lastUpdate,
+  chartData,
 }: {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
+  lastUpdate?: string;
+  chartData: any[];
 }) {
   return (
     <Card className="flex flex-col h-full w-full">
@@ -74,6 +69,13 @@ export function CustomRadarChart({
               gridType="circle"
               radialLines={false}
             />
+            <PolarRadiusAxis
+              angle={60}
+              stroke="hsla(var(--foreground))"
+              orientation="middle"
+              axisLine={false}
+              reversed={true}
+            />
             <PolarAngleAxis
               stroke="hsla(var(--foreground))"
               tick={false}
@@ -81,24 +83,18 @@ export function CustomRadarChart({
               axisLine={false}
             />
             <Radar
-              dataKey="desktop"
-              fill="var(--color-desktop)"
+              dataKey="wifi"
+              fill="var(--color-wifi)"
               fillOpacity={0}
-              stroke="var(--color-desktop)"
+              stroke="var(--color-wifi)"
               strokeWidth={2}
             />
             <Radar
-              dataKey="mobile"
-              fill="var(--color-mobile)"
+              dataKey="bluetooth"
+              fill="var(--color-bluetooth)"
               fillOpacity={0}
-              stroke="var(--color-mobile)"
+              stroke="var(--color-bluetooth)"
               strokeWidth={2}
-            />
-            <PolarRadiusAxis
-              angle={60}
-              stroke="hsla(var(--foreground))"
-              orientation="middle"
-              axisLine={false}
             />
           </RadarChart>
         </ChartContainer>
@@ -107,9 +103,7 @@ export function CustomRadarChart({
         <div className="flex gap-2 font-medium leading-none">
           Ultimo aggiornamento
         </div>
-        <div className="leading-none text-muted-foreground">
-          2024-10-5 20:14
-        </div>
+        <div className="leading-none text-muted-foreground">{lastUpdate}</div>
       </CardFooter>
     </Card>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Circle, CircleAlert, CircleCheck, Info } from "lucide-react";
+import { CircleAlert, CircleCheck, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.

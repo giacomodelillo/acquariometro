@@ -20,22 +20,13 @@ import {
 
 export const description = "A multiple line chart";
 
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
-
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  wifi: {
+    label: "Wifi",
     color: "hsl(var(--chart-1))",
   },
-  mobile: {
-    label: "Mobile",
+  bluetooth: {
+    label: "Bluetooth",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
@@ -43,9 +34,13 @@ const chartConfig = {
 export function CustomMultipleLineChart({
   title,
   description,
+  lastUpdate,
+  chartData,
 }: {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
+  lastUpdate?: string;
+  chartData: any[];
 }) {
   return (
     <Card className=" max-h-full h-full">
@@ -65,24 +60,24 @@ export function CustomMultipleLineChart({
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="time"
               tickLine={false}
               axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickMargin={0}
+              // tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Line
-              dataKey="desktop"
+              dataKey="wifi"
               type="monotone"
-              stroke="var(--color-desktop)"
+              stroke="var(--color-wifi)"
               strokeWidth={2}
               dot={false}
             />
             <Line
-              dataKey="mobile"
+              dataKey="bluetooth"
               type="monotone"
-              stroke="var(--color-mobile)"
+              stroke="var(--color-bluetooth)"
               strokeWidth={2}
               dot={false}
             />
@@ -93,9 +88,7 @@ export function CustomMultipleLineChart({
         <div className="flex gap-2 font-medium leading-none">
           Ultimo aggiornamento
         </div>
-        <div className="leading-none text-muted-foreground">
-          2024-10-5 20:14
-        </div>
+        <div className="leading-none text-muted-foreground">{lastUpdate}</div>
       </CardFooter>
     </Card>
   );

@@ -44,7 +44,7 @@ import { Plus, Trash, Sunrise, Sunset, Calendar1 } from "lucide-react";
 import { CustomJsonViewer } from "@/components/JsonViewer";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import LoadingState from "@/components/LoadingState";
+import { LoadingState } from "@/components/LoadingState";
 import { Skeleton } from "@/components/ui/skeleton";
 
 function formatDate(dateString: string): string {
