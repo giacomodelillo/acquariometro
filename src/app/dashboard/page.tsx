@@ -160,7 +160,7 @@ export default function Dashboard() {
       "postgres_changes",
       { event: "*", schema: "public", table: "ESP32" },
       (payload) => {
-        console.log(payload);
+       
         getSupabaseDataESP32();
       }
     )
@@ -179,15 +179,9 @@ export default function Dashboard() {
     },
   }));
 
-  console.log(sortedDataArray);
-
   const byDay = groupByDay(sortedDataArray);
   const groupedByExactTime = groupByExactTime(sortedDataArray);
   const groupedByRssi = groupByRssi(sortedDataArray);
-
-  console.log("Grouped by RSSI:", groupedByRssi);
-  console.log(groupedByExactTime);
-  console.log(byDay);
 
   const latest_data = supabaseDataESP32[0];
   const latest_data_date = latest_data

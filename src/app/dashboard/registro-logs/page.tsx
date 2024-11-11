@@ -39,7 +39,7 @@ export default function RegistroLogs() {
       "postgres_changes",
       { event: "*", schema: "public", table: "ESP32" },
       (payload) => {
-        console.log(payload);
+      
         getSupabaseDataESP32();
       }
     )

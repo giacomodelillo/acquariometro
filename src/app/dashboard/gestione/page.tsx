@@ -164,7 +164,6 @@ export default function Gestione() {
       ? supabaseDataCONFIG[0]
       : placeHolderJson;
 
-  console.log("selected", selectedJsonData);
 
   useEffect(() => {
     if (supabaseDataCONFIG && supabaseDataCONFIG[0]?.config_json) {
@@ -199,7 +198,6 @@ export default function Gestione() {
   }, [supabaseDataCONFIG, form]);
 
   const formValues = watch();
-  console.log("watch", formValues);
   const { fields, append, remove } = useFieldArray({
     control,
     name: "deepsleep.day_schedule",
@@ -207,7 +205,7 @@ export default function Gestione() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log("values", values);
+  
       insertSupbaseDataCONFIG(values);
     } catch (error) {
       console.error("Form submission error", error);
